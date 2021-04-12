@@ -1,0 +1,611 @@
+﻿<Window x:Class="TBQuestGame.PresentationLayer.GameSessionView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TBQuestGame.PresentationLayer"
+        mc:Ignorable="d"
+        Title="WebTree Productions" Height="600" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        Background="Sienna">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+        <!--#region INTERACTIVE AREA STYLE-->
+        
+        <Style x:Key="InteractionButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="AntiqueWhite"/>
+            <Setter Property="Width" Value="85"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid 
+                            Width="{TemplateBinding Width}" 
+                            Height="{TemplateBinding Height}" 
+                            ClipToBounds="True">
+                            <Rectangle 
+                                HorizontalAlignment="Stretch" 
+                                VerticalAlignment="Stretch" 
+                                Fill="{TemplateBinding Background}" 
+                                RadiusX="5" 
+                                RadiusY="5" />
+                            <!-- Present Content (text) of the button. -->
+                            <DockPanel >
+                                <ContentPresenter
+                                    Margin="4" 
+                                    HorizontalAlignment="Center"
+                                    Content="{TemplateBinding  Content}" 
+                                    TextBlock.Foreground="Black" />
+                            </DockPanel>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        
+        
+        <!--#endregion-->
+
+        <!--#region MAP AREA STYLE-->
+        
+        <Style x:Key="MapPanelButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="70"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="Foreground" Value="AntiqueWhite"/>
+            <Setter Property="FontSize" Value="8pt"/>
+
+        </Style>
+        
+        <!--#endregion-->
+        
+        <!--#region PLAYER STATUS AREA STYLE-->
+        
+        <Style x:Key="PlayerStatusTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Background" Value="AntiqueWhite"/>
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <Style x:Key="PlayerStatusLabelStyle" TargetType="Label">
+            <Setter Property="Width" Value="60"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
+        <Style x:Key="PlayerStatusButtonStyle" TargetType="Button" >
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Background" Value="AntiqueWhite"/>
+            <Setter Property="Width" Value="85"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Margin" Value="0,5,8,0"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid 
+                            Width="{TemplateBinding Width}" 
+                            Height="{TemplateBinding Height}" 
+                            ClipToBounds="True">
+                            <Rectangle 
+                                HorizontalAlignment="Stretch" 
+                                VerticalAlignment="Stretch" 
+                                Fill="{TemplateBinding Background}" 
+                                RadiusX="5" 
+                                RadiusY="5" />
+                            <!-- Present Content (text) of the button. -->
+                            <DockPanel >
+                                <ContentPresenter
+                                    Margin="4" 
+                                    HorizontalAlignment="Center"
+                                    Content="{TemplateBinding  Content}" 
+                                    TextBlock.Foreground="Black" />
+                            </DockPanel>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="Crimson"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!--#endregion-->       
+    </Window.Resources>
+
+    <Grid>
+        <Grid
+            Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="4*"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <Label
+                    Content="The Abysmal"
+                    FontSize="25"
+                    Foreground="Black"
+                    FontFamily="Tahoma"
+                    HorizontalAlignment="Center"/>
+                <Grid
+                    Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                <StackPanel
+                    Background="BurlyWood"
+                    Margin="5"
+                    Grid.Column="0"
+                    Orientation="Horizontal">
+                    <Button
+                        Click="MissionStatus_Click"
+                        Content="Quests"
+                        Width="50"
+                        Height="50"                               
+                        Style="{DynamicResource InteractionButtonStyle}"/>
+                    <Border Background="AntiqueWhite" CornerRadius="15" Margin="20">
+                        <TextBlock
+                                Margin="5"
+                                Padding="10"
+                                Height="80"
+                                Width="500"
+                                Text="{Binding CurrentLocationInformation, Mode=OneWay}"
+                                Foreground="Black"
+                                Background="AntiqueWhite"
+                                HorizontalAlignment="Center"
+                                TextWrapping="Wrap"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel
+                    Margin="5"
+                    Background="BurlyWood"
+                    Grid.Column="1">
+                    <Label
+                        Content="Game Map"
+                        Foreground="Black"
+                        HorizontalAlignment="Center"/>
+                    <Label
+                        Content="Available Locations"
+                        Foreground="Black"
+                        HorizontalAlignment="Center"/>
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <Button
+                            Tag="100"
+                            Visibility="{Binding ButtonVisibility.IsVillageVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                            Click="MapButton_Click"
+                            Content="Village"
+                            Style="{StaticResource MapPanelButtonStyle}"/>
+                        <Button
+                            Tag="101"
+                            Visibility="{Binding ButtonVisibility.IsMountainVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                            Click="MapButton_Click"
+                            Content="Mountains"
+                            Style="{StaticResource MapPanelButtonStyle}"/>
+                        <Button
+                            Tag="102"
+                            Visibility="{Binding ButtonVisibility.IsForestVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                            Click="MapButton_Click"
+                            Content="Forest"
+                            Style="{StaticResource MapPanelButtonStyle}" />
+
+                        <Button
+                            Tag="103"
+                            Visibility="{Binding ButtonVisibility.IsSwampVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                            Click="MapButton_Click"
+                            Content="Swamp"
+                            Style="{StaticResource MapPanelButtonStyle}"/>
+                        <Button
+                            Tag="104"
+                            Visibility="{Binding ButtonVisibility.IsHarborVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                            Click="MapButton_Click"
+                            Content="Harbor"
+                            Style="{StaticResource MapPanelButtonStyle}"/>
+
+                    </StackPanel>
+                    <StackPanel
+                        Height="50"
+                        Orientation="Horizontal">
+                        <Button
+                            Tag="202"
+                            Click="MapButton_Click"
+                            Visibility="{Binding ButtonVisibility.IsElfHoldVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                            Content="Elf Hold"
+                            Style="{StaticResource MapPanelButtonStyle}"/>
+                        <Button
+                            Tag="201"
+                            Visibility="{Binding ButtonVisibility.IsCaveVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                            Click="MapButton_Click"
+                            Content="Cave"
+                            Style="{StaticResource MapPanelButtonStyle}"/>
+                        <Button
+                            Tag="203"
+                            Visibility="{Binding ButtonVisibility.IsWitchesCampVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                            Click="MapButton_Click"
+                            Content="Witches Camp"
+                            Style="{StaticResource MapPanelButtonStyle}"/>
+                        <Button
+                            Tag="204"
+                            Visibility="{Binding ButtonVisibility.IsIslandOfLostSoulsVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                            Click="MapButton_Click"
+                            Content="Island"
+                            Style="{StaticResource MapPanelButtonStyle}"/>
+                        <Button
+                            Tag="105"
+                            Visibility="{Binding ButtonVisibility.IsAbyssVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                            Click="MapButton_Click"
+                            Content="Abyss"
+                            Style="{StaticResource MapPanelButtonStyle}"/>
+                        <Button
+                            Tag="300"
+                            Visibility="{Binding ButtonVisibility.IsHomeVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=TwoWay}"
+                            Click="MapButton_Click"
+                            Content="Home"
+                            Style="{StaticResource MapPanelButtonStyle}"/>
+                    </StackPanel>
+                </StackPanel>
+                </Grid>
+                <Grid
+                    Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid
+                        Background="BurlyWood"
+                        Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="4*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel
+                            Grid.Column="0">
+                        <StackPanel
+                        Orientation="Horizontal"
+                        Height="180">
+                            <TabControl
+                            x:Name="LocationInfoTabControl"
+                            Width="450"
+                            HorizontalAlignment="Left"
+                            Margin="5">
+                                <TabItem Header="NPCs"
+                                        x:Name="NpcsInfoTabItem">
+                                    <DataGrid 
+                                            x:Name="LocationNpcsDataGrid"
+                                            Height="120"
+                                            ItemsSource="{Binding CurrentLocation.Npcs}" 
+                                            SelectedItem="{Binding CurrentNpc}"
+                                            AutoGenerateColumns="False"
+                                            HeadersVisibility="Column">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn 
+                                                    Header="Description" 
+                                                    IsReadOnly="True"                 
+                                                    Binding="{Binding Information, Mode=OneWay}"
+                                                    Width="*">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </TabItem>
+                                <TabItem
+                                Header="Items in this location"
+                                x:Name="ItemsInfoTabItem">
+                                    <DataGrid
+                                    x:Name="LocationItemsDataGrid"
+                                    Height="75"
+                                    ItemsSource="{Binding CurrentLocation.GameItems}"
+                                    SelectedItem="{Binding CurrentGameItem}"
+                                    AutoGenerateColumns="False"
+                                    HeadersVisibility="Column">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn
+                                            Header="Description"
+                                            IsReadOnly="True"
+                                            Binding="{Binding Information, Mode=OneWay}"
+                                            Width="*">
+                                                <DataGridTextColumn.ElementStyle>
+                                                    <Style>
+                                                        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                                    </Style>
+                                                </DataGridTextColumn.ElementStyle>
+                                            </DataGridTextColumn>
+
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+
+                                </TabItem>
+
+                            </TabControl>
+
+                        </StackPanel>
+
+
+                        <Border Background="AntiqueWhite" CornerRadius="15" Margin="5">
+                                <TextBlock
+                                    Text="{Binding GameMessage, Mode=OneWay}"
+                                    Margin="5"
+                                    Padding="10"
+                                    Height="120"
+                                    Width="500"
+                                    Background="AntiqueWhite"
+                                    HorizontalAlignment="Center"
+                                    TextWrapping="Wrap"/>
+                            </Border>
+
+                    </StackPanel>
+                            
+                        <StackPanel
+                            Margin="10"
+                            Grid.Column="1">
+                        <Button
+                                Content="Speak To"
+                                Style="{StaticResource InteractionButtonStyle}" 
+                                Click="SpeakTo_ButtonClick"/>
+                        <Button
+                                Content="Pick up"
+                                Style="{StaticResource InteractionButtonStyle}"
+                                Click="PickUpButton_Click"/>
+                        <Button
+                                Content="Next"
+                                Style="{StaticResource InteractionButtonStyle}"/>
+                        <Button
+                                Content="Battle"
+                                Style="{StaticResource InteractionButtonStyle}"
+                                Click="AttackButton_Click"/>
+                        <Button
+                                Content="Defend"
+                                Style="{StaticResource InteractionButtonStyle}"
+                                Click="DefendButton_Click"/>
+                        <Button
+                                Content="Escape"
+                                Style="{StaticResource InteractionButtonStyle}"
+                                Click="RetreatButton_Click"/>
+                        
+                    </StackPanel>
+                    </Grid>
+                    <Grid
+                        Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*"/>
+                            <RowDefinition Height="1.5*"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel
+                            Margin="5"
+                            Background="BurlyWood">
+                        <Label
+                            Content="Inventory"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            FontSize="16"/>
+                        <TabControl
+                            x:Name="PlayerDataTabControl"
+                            Width="Auto"
+                            Height="100"
+                            Margin="10">
+                            <TabItem
+                                Header="Weapons"
+                                x:Name="WeaponsTabItem">
+                                <DataGrid
+                                    x:Name="WeaponsDataGrid"
+                                    AutoGenerateColumns="False"
+                                    HeadersVisibility="Column"
+                                    ItemsSource="{Binding Player.Weapons}"
+                                    SelectedItem="{Binding CurrentGameItem}"
+                                    Width="Auto">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Header="Name"
+                                            Binding="{Binding Name, Mode=OneWay}"
+                                            Width="2*"/>
+                                        <DataGridTextColumn
+                                            Header="Attack Boost"
+                                            Binding="{Binding AttackPoints, Mode=OneWay}"
+                                            Width="1.3*"/>
+                                        <DataGridTextColumn
+                                            Header="Value"
+                                            Binding="{Binding Value, Mode=OneWay}"
+                                            Width="1*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </TabItem>
+                            <TabItem
+                                Header="Artifacts"
+                                x:Name="ArtifactsTabItem">
+                                <DataGrid
+                                    x:Name="ArtifactssDataGrid"
+                                    AutoGenerateColumns="False"
+                                    HeadersVisibility="Column"
+                                    ItemsSource="{Binding Player.Artifacts}"
+                                    SelectedItem="{Binding CurrentGameItem}"
+                                    Width="Auto">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Header="Name"
+                                            Binding="{Binding Name, Mode=OneWay}"
+                                            Width="1*"/>
+                                        <DataGridTextColumn
+                                            Header="Description"
+                                            Binding="{Binding Description, Mode=OneWay}"
+                                            Width="1.5*"/>
+                                        <DataGridTextColumn
+                                            Header="Value"
+                                            Binding="{Binding Value, Mode=OneWay}"
+                                            Width=".5*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </TabItem>
+                            <TabItem
+                                Header="Spells"
+                                x:Name="SpellsTabItem">
+                                <DataGrid
+                                    x:Name="SpellsDataGrid"
+                                    AutoGenerateColumns="False"
+                                    HeadersVisibility="Column"
+                                    ItemsSource="{Binding Player.Spells}"
+                                    SelectedItem="{Binding CurrentGameItem}"
+                                    Width="Auto">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Header="Name"
+                                            Binding="{Binding Name, Mode=OneWay}"
+                                            Width="1*"/>
+                                        <DataGridTextColumn
+                                            Header="Description"
+                                            Binding="{Binding Description, Mode=OneWay}"
+                                            Width="1*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </TabItem>
+                            <TabItem
+                                Header="Treasure"
+                                x:Name="TreasureTabItem">
+                                <DataGrid
+                                    x:Name="TreausreDataGrid"
+                                    AutoGenerateColumns="False"
+                                    HeadersVisibility="Column"
+                                    ItemsSource="{Binding Player.Treasure}"
+                                    SelectedItem="{Binding CurrentGameItem}"
+                                    Width="Auto">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Header="Name"
+                                            Binding="{Binding Name, Mode=OneWay}"
+                                            Width="1*"/>
+                                        <DataGridTextColumn
+                                            Header="Description"
+                                            Binding="{Binding Description, Mode=OneWay}"
+                                            Width="1*"/>
+                                        <DataGridTextColumn
+                                            Header="Value"
+                                            Binding="{Binding Value, Mode=OneWay}"
+                                            Width=".5*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </TabItem>
+                        </TabControl>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            VerticalAlignment="Bottom"
+                            Height="Auto"
+                            HorizontalAlignment="Center">
+                            <Button 
+                                Content="Put Down"
+                                Style="{StaticResource InteractionButtonStyle}"
+                                Click="PutDownButton_Click"/>
+                            <Button 
+                                Content="Use Item"
+                                Style="{StaticResource InteractionButtonStyle}"
+                                Click="UseButton_Click"/>
+                        </StackPanel>
+
+                    </StackPanel>
+                        <StackPanel
+                            Margin="2"
+                            Grid.Row="1"
+                            Background="DarkGoldenrod">
+                            <Label
+                                FontWeight="Bold"
+                                FontSize="10"
+                                Content="Player Status"
+                                Foreground="Crimson"
+                                Height="22"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel
+                                    Orientation="Vertical">
+                                    <StackPanel
+                                        Orientation="Horizontal">
+                                        <Label
+                                            Content="Name"
+                                            Style="{StaticResource PlayerStatusLabelStyle}"/>
+                                        <TextBlock
+                                            Style="{StaticResource PlayerStatusTextBlockStyle}"
+                                            Text="{Binding Player.Name}"/>
+                                    </StackPanel>
+                                    <StackPanel
+                                        Orientation="Horizontal">
+                                        <Label
+                                            Width="100"
+                                            Content="Lives"
+                                            Style="{StaticResource PlayerStatusLabelStyle}"/>
+                                        <TextBlock
+                                            Style="{StaticResource PlayerStatusTextBlockStyle}"
+                                            Text="{Binding Player.Lives}"/>
+                                    </StackPanel>
+                                    <StackPanel
+                                        Orientation="Horizontal">
+                                        <Label
+                                            Width="100"
+                                            Content="Attack Strength"
+                                            Style="{StaticResource PlayerStatusLabelStyle}"/>
+                                        <TextBlock
+                                            Style="{StaticResource PlayerStatusTextBlockStyle}"
+                                            Text="{Binding Player.AttackPoints}"/>
+                                    </StackPanel>
+                                    <StackPanel
+                                        Orientation="Horizontal">
+                                        <Label
+                                            Width="100"
+                                            Content="Health"
+                                            Style="{StaticResource PlayerStatusLabelStyle}"/>
+                                        <TextBlock
+                                            Style="{StaticResource PlayerStatusTextBlockStyle}"
+                                            Text="{Binding Player.Health}"/>
+                                    </StackPanel>
+                                <StackPanel
+                                        Orientation="Horizontal">
+                                    <Label
+                                        Width="100"
+                                        Content="Wealth"
+                                        Style="{StaticResource PlayerStatusLabelStyle}"/>
+                                    <TextBlock
+                                        Style="{StaticResource PlayerStatusTextBlockStyle}"
+                                        Text="{Binding Player.Wealth}"/>
+                                </StackPanel>
+                            </StackPanel>
+                                <StackPanel
+                                    Grid.Column="1">
+                                    <Button
+                                        Content="Save"
+                                        Style="{StaticResource PlayerStatusButtonStyle}"/>
+                                    <Button
+                                        Content="Quit and Save"
+                                        Style="{StaticResource PlayerStatusButtonStyle}"/>
+                                    <Button
+                                        Content="New Game"
+                                        Style="{StaticResource PlayerStatusButtonStyle}"/>
+                                    <Button
+                                        x:Name="ExitButton"
+                                        Click="ExitButton_Click"
+                                        Content="Exit"
+                                        Style="{StaticResource PlayerStatusButtonStyle}"/>
+                                </StackPanel>
+                            </Grid> 
+                        </StackPanel>
+                        
+                    </Grid>
+                </Grid>
+            </Grid>
+
+    </Grid>
+</Window>

@@ -1,0 +1,9 @@
+﻿<Application x:Class="WpfTBQuestGame.S5.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:WpfTBQuestGame.S5"
+             Startup="Application_Startup">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
